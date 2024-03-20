@@ -1,0 +1,64 @@
+#include <stdio.h>
+
+// Struct untuk merepresentasikan tanggal
+struct Tanggal {
+    int HARI;
+    int BULAN;
+    int TAHUN;
+};
+
+// Fungsi untuk mengecek apakah suatu tahun adalah tahun kabisat atau bukan
+int kabisat(int year) {
+    if ((year % 4 == 0 && year % 100 != 0) || (year % 400 == 0)) {
+        return 1; // Tahun kabisat
+    } else {
+        return 0; // Bukan tahun kabisat
+    }
+}
+
+// Fungsi untuk mendapatkan jumlah hari dalam suatu bulan pada suatu tahun
+int sebulan(int month, int year) {
+    if (month == 2) {
+        return (kabisat(year) ? 29 : 28);
+    } else if (month == 4 || month == 6 || month == 9 || month == 11) {
+        return 30;
+    } else {
+        return 31;
+    }
+}
+
+// Fungsi untuk mendapatkan tanggal esok dari suatu tanggal
+struct Tanggal next_day(struct Tanggal date) {
+    struct Tanggal esok;
+
+    esok.HARI = date.HARI + 1;
+    esok.BULAN = date.BULAN;
+    esok.TAHUN = date.TAHUN;
+
+    if (esok.HARI > sebulan(esok.BULAN, esok.TAHUN)) {
+        esok.HARI = 1;
+        esok.BULAN++;
+        if (esok.BULAN > 12) {
+            esok.BULAN = 1;
+            esok.TAHUN++;
+        }
+    }
+
+    return esok;
+}
+
+int main() {
+    struct Tanggal date;
+
+    // Meminta input tanggal dari pengguna
+    printf("Masukkan tanggal (dd/mm/yyyy): ");
+    scanf("%d/%d/%d", &date.HARI, &date.BULAN, &date.TAHUN);
+
+    // Mendapatkan tanggal esoknya
+    struct Tanggal esok = next_day(date);
+
+    // Menampilkan tanggal esoknya
+    printf("Tanggal esoknya adalah: %d/%d/%d\n", esok.HARI, esok.BULAN, esok.TAHUN);
+
+    return 0;
+}
